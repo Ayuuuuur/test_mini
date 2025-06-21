@@ -1,0 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_check_env.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/14 15:46:46 by marvin            #+#    #+#             */
+/*   Updated: 2025/05/14 15:46:46 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../../includes/minishell.h"
+
+int	ft_check_env(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	if (n == 0)
+		return (0);
+	// printf("n == >%ld\n",n);
+	while ((s1[i] || s2[i]))
+	{
+		if ((unsigned char)s1[i] != (unsigned char)s2[i] || i >= (n - 1))
+		{
+			// printf("i == >%ld\n",i);
+			if((s2[i] == ' ' || !ft_isalnum(s2[i])) && i == n -1 )
+				break;
+			return (1);
+		}
+		i++;
+	}
+	
+	return (0);
+}
