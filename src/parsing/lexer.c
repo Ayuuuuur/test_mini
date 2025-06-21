@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-
 t_parsing *lexer(char *str)
 {
     t_parsing *head;
@@ -32,6 +31,8 @@ t_parsing *lexer(char *str)
     int len = ft_strlen(str);
     while(str[i])
     {
+        if(str[i] == ' ')
+            head = ft_save(tmp,head,WHITE_SPACE,1,state);
         while(str[i] == ' ')
             i++;
         state = GENERAL;
@@ -93,7 +94,10 @@ t_parsing *lexer(char *str)
             if(str[i] == 0)
                 break;
             if(str[i + 1] == ' ')
+            {
+                head = ft_save(tmp,head,WHITE_SPACE,1,state);
                 i++;
+            }
         }
         else if(c == 34 || c == 39)
         {
@@ -131,7 +135,10 @@ t_parsing *lexer(char *str)
             if(str[i] == 0)
                 break;
             if(str[i + 1] == ' ')
+            {
+                head = ft_save(tmp,head,WHITE_SPACE,1,state);
                 i++;
+            }
         }
         else
             head = ft_save(str,head,c,str[i],state);
