@@ -122,7 +122,7 @@ int main(int ac, char **av, char **envp)
         {
             i = 0;
             while(commads_in_out->full_cmd[i])
-                printf("full cmd ==> %s\n",commads_in_out->full_cmd[i++]);
+                printf("full cmd ==> |%s|\n",commads_in_out->full_cmd[i++]);
             printf("in_file ==> %d\n",commads_in_out->in_file);
             printf("out_file ==> %d\n",commads_in_out->out_file);
             printf("********************\n");

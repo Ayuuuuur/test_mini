@@ -136,7 +136,14 @@ t_parsing *expand(t_parsing *head, t_env *envp, t_var *data, t_cmd **cmd)
 
     if(!head)
         return(NULL);
+    
+    // Skip tokens with NULL content (tokens that were marked for skipping)
+    if(!head->content)
+        return(head);
+        
     head = check_space(head);
+    if(!head)
+        return(NULL);
     if(head->type == PIPE_LINE)
     {
         *cmd = ft_send(data, *cmd);
@@ -179,13 +186,13 @@ t_parsing *expand(t_parsing *head, t_env *envp, t_var *data, t_cmd **cmd)
             return(NULL);
         head = head->next;
         head = check_space(head);
-        printf("head->typ %s\n",head->content);
         return(head);
     }
     
     if(head->state == 3)
     {
         data->s[data->l] = check_env_general(head->content,envp,data);
+        printf("here 1 %s\n", data->s[data->l]);
         data->l++;
         if(!head->content)
             return(NULL);
@@ -193,26 +200,39 @@ t_parsing *expand(t_parsing *head, t_env *envp, t_var *data, t_cmd **cmd)
     }
     if(head->state == 0 && head->type != DQUOTE && head->type != QUOTE)
     {
-        
-        data->s[data->l] = ft_strdup(head->content);
-        data->l++;
+        if(head->content && ft_strlen(head->content) > 0)
+        {
+            data->s[data->l] = ft_strdup(head->content);
+            printf("here 2 %s\n", data->s[data->l]);
+            data->l++;
+        }
         return(head);
     }
     if(head->state == 2)
     {
-        printf("state 3\n");
+        printf("head->content => %s \n",head->content);
         if(ft_double(head->content, envp, data) == 2)
             return(NULL);
-        data->s[data->l] = ft_strdup(data->s1);
-        data->l++;
+        // Only add non-empty content
+        if(data->s1 && ft_strlen(data->s1) > 0)
+        {
+            data->s[data->l] = ft_strdup(data->s1);
+            printf("here 3 %s\n", data->s[data->l]);
+            data->l++;
+        }
         return(head);
     }
     
     if(head->state == 1)
     {
         printf("state 4\n");
-        data->s[data->l] = ft_strdup(head->content);
-        data->l++;
+        // Only add non-empty content
+        if(head->content && ft_strlen(head->content) > 0)
+        {
+            data->s[data->l] = ft_strdup(head->content);
+            printf("here 4 %s\n", data->s[data->l]);
+            data->l++;
+        }
         return(head);
     }
     
