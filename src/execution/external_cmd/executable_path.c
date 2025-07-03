@@ -24,7 +24,7 @@ char	*get_path_env(t_env *envs)
 	return (NULL);
 }
 
-char	*find_exec_file(char **dirc, char *cmd)
+char	*find_exec_file(char **dirc, char *cmd, t_env *envs)
 {
 	char	*pathname;
 	int		i;
@@ -32,34 +32,34 @@ char	*find_exec_file(char **dirc, char *cmd)
 	i = 0;
 	while (dirc[i])
 	{
-		pathname = build_path(dirc[i], cmd);
+		pathname = build_path(dirc[i], cmd, envs);
 		if (!pathname)
 		{
-			free_arr_b((void **)dirc);
+			// free_arr_b((void **)dirc);
 			return (NULL);
 		}
 		if (access(pathname, X_OK) == 0)
 		{
-			free_arr_b((void **)dirc);
+			// free_arr_b((void **)dirc);
 			return (pathname);
 		}
-		free(pathname);
+		// free(pathname);
 		i++;
 	}
-	free_arr_b((void **)dirc);
+	// free_arr_b((void **)dirc);
 	return (NULL);
 }
 
-char	*build_path(char *dirc, char *cmd)
+char	*build_path(char *dirc, char *cmd, t_env *envs)
 {
 	char	*temp;
 	char	*pathname;
 
-	temp = ft_strjoin(dirc, "/");
+	temp = ft_strjoin(dirc, "/", envs);
 	if (!temp)
 		return (NULL);
-	pathname = ft_strjoin(temp, cmd);
-	free(temp);
+	pathname = ft_strjoin(temp, cmd, envs);
+	// free(temp);
 	return (pathname);
 }
 
@@ -76,12 +76,11 @@ char	*executable_path(char *cmd, t_env *envs)
 	if (cmd[0] == '/' || cmd[0] == '.' )
 		return (NULL);
 	path = get_path_env(envs); ////
-	dirc = ft_split(path, ':');
+	dirc = ft_split(path, ':', envs);
 	if (!dirc)
 		return (NULL);
-	pathname = find_exec_file(dirc, cmd);
+	pathname = find_exec_file(dirc, cmd, envs);
 	if (!pathname)
 		return (NULL);
-
 	return (pathname);
 }

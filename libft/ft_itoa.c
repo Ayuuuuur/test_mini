@@ -32,14 +32,14 @@ static int	len_numbre(long int nb)
 	return (len);
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(int n, t_env *envs)
 {
 	char		*str;
 	size_t		len;
 	long int	nb;
 
 	nb = n;
-	str = (char *)malloc(((len = len_numbre(nb)) + 1) * sizeof(char));
+	str = (char *)g_collector(((len = len_numbre(nb)) + 1) * sizeof(char), envs);
 	if (!str)
 		return (NULL);
 	if (nb < 0)

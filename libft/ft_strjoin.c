@@ -12,7 +12,7 @@
 
 #include "../includes/libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2, t_env *envs)
 {
 	char	*str;
 	int		len;
@@ -24,7 +24,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2);
-	str = (char *)malloc(len + 1 * sizeof(char));
+	str = (char *)g_collector(len + 1 * sizeof(char), envs);
 	if (!str)
 		return (NULL);
 	while (i < len && s1[j])

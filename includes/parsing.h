@@ -63,9 +63,8 @@ typedef struct s_var
     int l;
 }t_var;
 
-int is_allowed(char c);
-t_parsing *lexer(char *str);
-t_parsing *ft_save(char *av,t_parsing *head,enum e_type type,char c,enum e_state state);
+t_parsing *ft_save(char *av,t_parsing *head,enum e_type type,char c,enum e_state state, t_env *envp);
+t_parsing *lexer(char *st, t_env *envs);
 enum e_type check_token(char *str, int i);
 void    error_print(char *str);
 t_parsing *check_pipe(t_parsing *curr, int len);
@@ -77,8 +76,8 @@ int syntax_err(t_parsing *head);
 int ft_redirect_out(t_parsing *head,t_var *data);
 int ft_redirect_in(t_parsing *head , t_var *data);
 int	ft_check_env(const char *s1, const char *s2, size_t n);
-char *ft_charjoin(char *str,char c);
+char *ft_charjoin(char *str,char c, t_env *envs);
 int check_odd(char *str);
-char *join_char(char *str, char c);
+char *join_char(char *str, char c, t_env *envs);
 t_parsing *check_space(t_parsing *head);
 #endif

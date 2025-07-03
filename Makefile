@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Werror -Wextra -Wall -fsanitize=address -g
+CFLAGS = -Werror -Wextra -Wall -g #-fsanitize=address 
 
 SRC := 	$(wildcard src/parsing/*.c) \
 		$(wildcard src/parsing/redirect_out/*.c) \
@@ -8,6 +8,8 @@ SRC := 	$(wildcard src/parsing/*.c) \
 		$(wildcard src/parsing/expand/*.c) \
 		$(wildcard src/execution/*.c) \
 	 	$(wildcard src/execution/builtins/*.c) \
+	 	$(wildcard src/execution/envp/*.c) \
+	 	$(wildcard src/execution/signals/*.c) \
 	 	$(wildcard src/execution/external_cmd/*.c) \
 		$(wildcard *.c) \
 		$(wildcard libft/*.c)

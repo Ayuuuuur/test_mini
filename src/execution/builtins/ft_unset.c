@@ -16,11 +16,10 @@ int	ft_strcmp(char *s1, char *s2)
 
 int ft_unset(char **args, t_env **envs)
 {
-	t_env *temp;
-	t_env *prev;
 	int i;
 	
-	i = 1; //1 name of program
+	t_env (*temp), (*prev);
+	i = 1; // skip unset
 	while (args[i])
 	{
 		temp = (*envs);
@@ -33,11 +32,7 @@ int ft_unset(char **args, t_env **envs)
 					(*envs) = temp->next;
 				else
 					prev->next = temp->next;
-				
 				free_node(temp);
-				/*free(temp->key);  //remove the node.
-				free(temp->value);
-				free(temp);*/
 				break;
 			}
 			prev = temp;
@@ -45,5 +40,5 @@ int ft_unset(char **args, t_env **envs)
 		}
 		i++;
 	}
-	return(EXIT_SUCCESS);
+	return(G_EXIT_STATUS = 0);
 }

@@ -12,9 +12,9 @@
 
 #include "../../includes/minishell.h"
 
-t_parsing *ft_save(char *av,t_parsing *head,enum e_type type,char c,enum e_state state)
+t_parsing *ft_save(char *av,t_parsing *head,enum e_type type,char c,enum e_state state, t_env *envs)
 {
-    t_parsing *data = malloc(sizeof(t_parsing));
+    t_parsing *data = g_collector(sizeof(t_parsing), envs);
     t_parsing *current = NULL;
     if(!data)
         return (NULL);
@@ -22,7 +22,7 @@ t_parsing *ft_save(char *av,t_parsing *head,enum e_type type,char c,enum e_state
         data->content = av;
     else
     {
-        data->content = malloc(2);
+        data->content = g_collector(2, envs);
         data->content[0] = c;   
         data->content[1] = 0;   
     }

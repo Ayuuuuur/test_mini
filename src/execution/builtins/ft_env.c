@@ -1,12 +1,18 @@
 #include "../../../includes/minishell.h"
 
+int ft_perror_env(char *str, int exit_stat)
+{
+	ft_putstr_fd(str, 2);
+	G_EXIT_STATUS =  exit_stat;
+	return(G_EXIT_STATUS);
+}
+
 int ft_env(char **args, t_env *envs)
 {
 	if(!envs || !get_env_value("PATH", envs))
-	{
-		ft_putstr_fd("minishell: env: No such file or directory\n", 2);
-		return(G_EXIT_STATUS =  127);
-	}
+		return(ft_perror_env("minishell: env: No such file or directory\n", 127));
+	if(!executable_path("env", envs)) // in case we have path walakin mashi dyal env
+		return(ft_perror_env("env: command not found\n", 127));
 	if(args[1] != NULL)
 	{
 		ft_putstr_fd("env: ", 2);
@@ -24,6 +30,6 @@ int ft_env(char **args, t_env *envs)
 		}
 		envs = envs->next;
 	}
-	return(G_EXIT_STATUS = 1);
+	return(G_EXIT_STATUS = 0);
 }
 

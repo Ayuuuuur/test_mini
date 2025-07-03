@@ -12,7 +12,7 @@
 
 #include "../includes/libft.h"
 
-char	*ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1, t_env *envs)
 {
 	char			*str;
 	unsigned int	i;
@@ -22,7 +22,7 @@ char	*ft_strdup(const char *s1)
 	if (!s1)
 		return (NULL);
 	len = ft_strlen(s1);
-	str = (char *)malloc((len + 1) * sizeof(char));
+	str = (char *)g_collector((len + 1) * sizeof(char), envs);
 	if (!str)
 		return (NULL);
 	while (s1[i])

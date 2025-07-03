@@ -6,8 +6,10 @@ int set_env(char *var, char *new_value, t_env *envs)
 	{
 		if(ft_strcmp(var, envs->key) == 0 && new_value)
 		{
-			free(envs->value);
-			envs->value = ft_strdup(new_value);
+			if(envs->value) 
+				free(envs->value); // we freed cuz we dont use gc in envs
+			envs->value = ft_strdup(new_value, envs);
+			envs->flag_exported = 1;
 			return(0);
 		}
 		envs = envs->next;
@@ -28,9 +30,35 @@ char *get_env_value(char *key, t_env *envs)
     return NULL; // not found
 }
 
-int ft_cd(char **args, t_env *envs)
+
+int	go_new_dir(char *new_dir, t_env *envs, char *oldpwd)
 {
 	char *pwd;
+
+	if(new_dir == NULL || ft_strcmp(new_dir, "~") == 0) // go to HOME.
+	{
+		if(chdir(get_env_value("HOME", envs)) == -1)
+			return(print_error("minishell: cd: HOME not set\n"));
+	}
+	else if(strcmp(new_dir, "-") == 0) // go to OLDPWD
+	{
+		if(chdir(get_env_value("OLDPWD", envs)) == -1)
+			return(print_error("minishill: cd: OLDPWD not set\n"));
+		printf("%s\n", get_env_value("OLDPWD", envs));
+	}
+	else if(chdir(new_dir) == -1) // go to path , relative or absoulot 
+		return(ft_perror_cd());
+	pwd = getcwd(NULL, 0);
+	if(pwd == NULL) // when getcwd failed
+		return(ft_perror_cd());
+	set_env("OLDPWD", oldpwd, envs); //not check oldpwd ,if not exist
+	set_env("PWD", pwd, envs);
+	G_EXIT_STATUS = 0;
+	return(EXIT_SUCCESS);
+}
+
+int ft_cd(char **args, t_env *envs)
+{
 	char *oldpwd;
 	int i;
 
@@ -38,46 +66,9 @@ int ft_cd(char **args, t_env *envs)
 	while (args[i] != NULL) // len args
 		i++;
 	if(i > 2)
-	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
-		return(EXIT_FAILURE); // exit status == 1
-	}
+		return(print_error("minishell: cd: too many arguments\n"));
 	oldpwd = get_env_value("PWD", envs); // we do both methods , when getcwd can't retrive the pwd form kernel
 	if(oldpwd == NULL)
 		oldpwd = getcwd(NULL, 0);
-
-	if(args[1] == NULL || ft_strcmp(args[1], "~") == 0) // go to HOME.
-	{
-		if(chdir(get_env_value("HOME", envs)) == -1)
-		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-			return(EXIT_FAILURE);
-		}
-	}
-	else if(strcmp(args[1], "-") == 0) // go to OLDPWD
-	{
-		if(chdir(get_env_value("OLDPWD", envs)) == -1)
-		{
-			ft_putstr_fd("minishill: cd: OLDPWD not set\n", 2);
-			return(EXIT_FAILURE);	
-		}
-		printf("%s\n", get_env_value("OLDPWD", envs));
-	}
-	else if(chdir(args[1]) == -1) // go to path , relative or absoulot 
-	{
-		// printf("%s\n",strerror(errno));
-		perror("minishell");
-		return(EXIT_FAILURE);
-	}
-
-	pwd = getcwd(NULL, 0);
-	if(pwd == NULL) // when getcwd failed
-	{
-		perror("minishell");
-		return(EXIT_FAILURE);
-	}
-	set_env("OLDPWD", oldpwd, envs); //not check oldpwd ,if not exist
-	set_env("PWD", pwd, envs);
-
-	return(EXIT_SUCCESS);
+	return(go_new_dir(args[1], envs, oldpwd));
 }

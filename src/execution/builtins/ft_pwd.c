@@ -1,3 +1,5 @@
+
+
 #include "../../../includes/minishell.h"
 
 int ft_pwd(t_env *envs)
@@ -15,5 +17,6 @@ int ft_pwd(t_env *envs)
 		}
 	}
 	printf("%s\n", working_d);
+	G_EXIT_STATUS = 0;
 	return(EXIT_SUCCESS);
 }

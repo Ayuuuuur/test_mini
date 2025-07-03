@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-t_parsing *lexer(char *str)
+t_parsing *lexer(char *str, t_env *envs)
 {
     t_parsing *head;
     char *tmp;
@@ -32,14 +32,14 @@ t_parsing *lexer(char *str)
     while(str[i])
     {
         if(str[i] == ' ')
-            head = ft_save(tmp,head,WHITE_SPACE,1,state);
+            head = ft_save(tmp,head,WHITE_SPACE,1,state, envs);
         while(str[i] == ' ')
             i++;
         state = GENERAL;
         c = check_token(str,i);
         if(c == ENV)
         {
-            tmp = malloc(len + 1);
+            tmp = g_collector(len + 1, envs);
             j = 0;
             while(str[i])
             {
@@ -53,7 +53,7 @@ t_parsing *lexer(char *str)
             }
             tmp[j] = 0;
             state = ENV_STRING;
-            head = ft_save(tmp,head,WORD,0,state);
+            head = ft_save(tmp,head,WORD,0,state, envs);
             if(str[i] == 0)
                 break;
             continue;
@@ -65,18 +65,18 @@ t_parsing *lexer(char *str)
                 c = '>';
             else
                 c = '<';
-            tmp = malloc(3);
+            tmp = g_collector(3, envs);
             tmp[0] = c;
             tmp[1] = c;
             tmp[2] = 0;
-            head = ft_save(tmp,head,t,0,state);
+            head = ft_save(tmp,head,t,0,state, envs);
             i += 2;
             continue;
         }
         else if(c == -1)
         {
             t = c;
-            tmp = malloc(len + 1);
+            tmp = g_collector(len + 1, envs);
             j = 0;
             while(c == -1 && str[i])
             {
@@ -85,7 +85,7 @@ t_parsing *lexer(char *str)
                 if(c != -1 || str[i] == 0)
                 {
                     tmp[j] = '\0';
-                    head = ft_save(tmp,head,t,0,state);
+                    head = ft_save(tmp,head,t,0,state, envs);
                     if(c != -1)
                         i--;
                     break;
@@ -95,20 +95,20 @@ t_parsing *lexer(char *str)
                 break;
             if(str[i + 1] == ' ')
             {
-                head = ft_save(tmp,head,WHITE_SPACE,1,state);
+                head = ft_save(tmp,head,WHITE_SPACE,1,state, envs);
                 i++;
             }
         }
         else if(c == 34 || c == 39)
         {
-            head = ft_save(str,head,c,str[i],state);
+            head = ft_save(str,head,c,str[i],state, envs);
             i++;
             j = 0;
-            tmp = malloc(len + 1);
+            tmp = g_collector(len + 1, envs);
             t = c;
             if(str[i] == c)
             {
-                head = ft_save(str,head,c,str[i],state);
+                head = ft_save(str,head,c,str[i],state, envs);
                 i++;
                 continue;
             }
@@ -123,11 +123,11 @@ t_parsing *lexer(char *str)
                     else
                         state = INQUOTE;
                     tmp[j] = '\0';
-                    head = ft_save(tmp,head,-1,0,state);
+                    head = ft_save(tmp,head,-1,0,state, envs);
                     if(c == t)
                     {
                         state = GENERAL;
-                        head = ft_save(str,head,c,c,state);
+                        head = ft_save(str,head,c,c,state, envs);
                     } 
                     break;
                 }
@@ -136,12 +136,12 @@ t_parsing *lexer(char *str)
                 break;
             if(str[i + 1] == ' ')
             {
-                head = ft_save(tmp,head,WHITE_SPACE,1,state);
+                head = ft_save(tmp,head,WHITE_SPACE,1,state, envs);
                 i++;
             }
         }
         else
-            head = ft_save(str,head,c,str[i],state);
+            head = ft_save(str,head,c,str[i],state, envs);
         i++;
     }
     
