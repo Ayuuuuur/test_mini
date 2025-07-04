@@ -20,7 +20,6 @@ int ft_redirect_in(t_parsing *head , t_var *data)
     if(!head)
         return(2);
     head = check_space(head);
-    printf("here\n");
     fd = open(head->content,O_RDONLY);
     if(fd < 0)
     {

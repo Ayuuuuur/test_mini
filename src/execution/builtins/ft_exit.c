@@ -68,7 +68,7 @@ void exit_and_clean(t_env *envs)
 {
 	clean_memory(&(envs->head_gc));
 	free_list(&(envs));
-	exit(G_EXIT_STATUS % 256);
+	exit(g_exit_status % 256);
 }
 
 void ft_exit(char **args, int is_child, t_env *envs)
@@ -82,7 +82,7 @@ void ft_exit(char **args, int is_child, t_env *envs)
 	{
 		display_exit(is_child);
 		exit_and_clean(envs);
-		// exit(G_EXIT_STATUS);
+		// exit(g_exit_status);
 	}
 	else if(is_valid_exit(args[1]) == -1 )// if not numeric or exceed range  
 		message_error_exit(args[1], is_child, envs);
@@ -90,14 +90,14 @@ void ft_exit(char **args, int is_child, t_env *envs)
 	{
 		display_exit(is_child);
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		G_EXIT_STATUS = 1;
+		g_exit_status = 1;
 		return;
 	}
 	else // exit with the valid number
 	{
 		display_exit(is_child);
-		G_EXIT_STATUS = ft_atoi(args[1]);
+		g_exit_status = ft_atoi(args[1]);
 		exit_and_clean(envs);
-		// exit(G_EXIT_STATUS % 256); // to make sur exit correctly
+		// exit(g_exit_status % 256); // to make sur exit correctly
 	}
 }

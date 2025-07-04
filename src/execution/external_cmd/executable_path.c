@@ -34,19 +34,11 @@ char	*find_exec_file(char **dirc, char *cmd, t_env *envs)
 	{
 		pathname = build_path(dirc[i], cmd, envs);
 		if (!pathname)
-		{
-			// free_arr_b((void **)dirc);
 			return (NULL);
-		}
 		if (access(pathname, X_OK) == 0)
-		{
-			// free_arr_b((void **)dirc);
 			return (pathname);
-		}
-		// free(pathname);
 		i++;
 	}
-	// free_arr_b((void **)dirc);
 	return (NULL);
 }
 
@@ -59,7 +51,6 @@ char	*build_path(char *dirc, char *cmd, t_env *envs)
 	if (!temp)
 		return (NULL);
 	pathname = ft_strjoin(temp, cmd, envs);
-	// free(temp);
 	return (pathname);
 }
 

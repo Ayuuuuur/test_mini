@@ -22,7 +22,7 @@ t_parsing *check_quote(t_parsing *curr)
         curr = curr->next;
         if(!curr)
             return(error_print("syntax error \"unclosed quotes\"\n"),NULL);
-        while(curr->type != c)
+        while(curr && curr->type != c)
         {
             if(!curr)
                 return(error_print("syntax error \"unclosed quotes\"\n"),NULL);

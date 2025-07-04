@@ -49,10 +49,7 @@ char **envs_to_array(t_env *envs)
 	{
 		env_arr[i] = join_key_value(envs);
 		if(!env_arr[i])
-		{
-			// free_arr_b((void **)env_arr);
 			return(NULL);
-		}
 		i++;
 		envs = envs->next;
 	}

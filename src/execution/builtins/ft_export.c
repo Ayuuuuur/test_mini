@@ -61,7 +61,7 @@ void message_error_export(char *str)
 	ft_putstr_fd("minishell: export: '", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
-	G_EXIT_STATUS = 1;
+	g_exit_status = 1;
 }
 
 int ft_export(char **args, t_env **envs)

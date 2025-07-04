@@ -36,6 +36,6 @@ int	ft_echo(char **args)
 	}
 	if (check == 0)
 		printf("\n");
-	G_EXIT_STATUS = 0;
+	g_exit_status = 0;
 	return (EXIT_SUCCESS);
 }

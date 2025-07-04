@@ -40,5 +40,5 @@ int ft_unset(char **args, t_env **envs)
 		}
 		i++;
 	}
-	return(G_EXIT_STATUS = 0);
+	return(g_exit_status = 0);
 }

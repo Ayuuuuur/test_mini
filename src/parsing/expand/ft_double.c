@@ -103,7 +103,7 @@ int ft_double(char *str, t_env *envp, t_var *data)
             }
             else if(str[data->j] == '?')
             {
-                data->s1 = ft_strjoin(data->s1,ft_itoa(G_EXIT_STATUS,envp),envp);
+                data->s1 = ft_strjoin(data->s1,ft_itoa(g_exit_status,envp),envp);
                 data->i = data->j;
                 continue;
             }
@@ -162,13 +162,16 @@ int ft_double(char *str, t_env *envp, t_var *data)
                     tmp = envp;
                     while (tmp)
                     {
-                        if (ft_strcmp(tmp->key, ft_substr(str, start, len)) == 0)
+                        char *temp_substr = ft_substr(str, start, len);  // ✅ Store the result
+                        if (ft_strcmp(tmp->key, temp_substr) == 0)
                         {
                             data->s1 = ft_strjoin(data->s1, tmp->value, envp);
+                            free(temp_substr);  // ✅ Free the malloc'd substring
                             if (!data->s1)
                                 return (2);
                             break;
                         }
+                        free(temp_substr); 
                         tmp = tmp->next;
                     }
                     data->i = data->j - 1;

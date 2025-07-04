@@ -15,12 +15,6 @@ void ft_execve(t_env *envs, t_cmd *tmp_cmd)
 		exit(127);
 	}
 	env_arr = envs_to_array(envs);// no need to check NULL, because can run execve without envs
-	if(!exec_path)
-	{
-		ft_putstr_fd(tmp_cmd->full_cmd[0], 2);
-		ft_putstr_fd(": command not found\n", 2);
-		exit(127);
-	}
 	if(execve(exec_path, tmp_cmd->full_cmd, env_arr) == -1)
 	{
 		ft_putstr_fd(tmp_cmd->full_cmd[0], 2);
@@ -67,7 +61,8 @@ void run_commands(t_pids **process_ids, t_cmd *tmp_cmd, int **pipes, t_env **env
 	{
 		if(len_cmd == 1) // if one command
 		{
-			duplication(i, len_cmd, pipes, tmp_cmd);
+			if(duplication(i, len_cmd, pipes, tmp_cmd) == 1)
+				clean_memory(&((*envs)->head_gc));
 			execute_one_command(process_ids, tmp_cmd, pipes, envs);
 		}
 		else //many commands 
@@ -76,7 +71,8 @@ void run_commands(t_pids **process_ids, t_cmd *tmp_cmd, int **pipes, t_env **env
 			if((*process_ids)->pids[(*process_ids)->nbr_childs] == 0)
 			{
 				set_signals_dfl();
-				duplication(i, len_cmd, pipes, tmp_cmd); // duplicate and CLOSE , stdout stdin with pipes
+				if(duplication(i, len_cmd, pipes, tmp_cmd) == 1)
+					clean_memory(&((*envs)->head_gc));
 				execute_many_cmnd(tmp_cmd, envs, pipes, len_cmd);
 			}
 			(*process_ids)->nbr_childs++; //the number of childes forked
@@ -111,7 +107,7 @@ t_pids *execute_commands(t_env **envs, t_cmd *tmp_cmd)
 // //exit status
 
 // if(ft_strcmp(tmp_cmd->full_cmd[0], "echo") == 0 && ft_strcmp(tmp_cmd->full_cmd[1], "?") == 0)
-// 	printf("my exit status = %d\n", G_EXIT_STATUS);
+// 	printf("my exit status = %d\n", g_exit_status);
 // else { ////// test exit status
 
 // } ///// test exit status

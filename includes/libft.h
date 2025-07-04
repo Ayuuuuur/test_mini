@@ -36,6 +36,7 @@ typedef struct env
     struct env *next;
 }  t_env;
 
+
 typedef struct s_list
 {
 	void			*content;

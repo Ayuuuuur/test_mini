@@ -12,6 +12,7 @@
 
 #include "../../../includes/minishell.h"
 
+
 void check_export(t_parsing **head, t_env *envs)
 {
     t_parsing *current = *head;
@@ -21,26 +22,17 @@ void check_export(t_parsing **head, t_env *envs)
     
     while (current)
     {
-        // Check if current token is "export"
         if (current->content && ft_strcmp(current->content, "export") == 0)
         {
             current = current->next;
-            
-            // Skip whitespace after export
             while (current && current->type == WHITE_SPACE)
                 current = current->next;
-            
-            // Process each argument after export
             while (current && current->type != PIPE_LINE)
             {
-                // Skip whitespace
                 while (current && current->type == WHITE_SPACE)
                     current = current->next;
-                
                 if (!current || current->type == PIPE_LINE)
                     break;
-                
-                // Check if this token has '=' but the next token is not whitespace
                 if (current->content && ft_strchr(current->content, '=') && 
                     current->next && current->next->type != WHITE_SPACE &&
                     current->next->type != PIPE_LINE)
@@ -48,35 +40,19 @@ void check_export(t_parsing **head, t_env *envs)
                     str = ft_strdup(current->content, envs);
                     if (!str)
                         return;
-                    
                     next_token = current->next;
-                    
-                    // Skip quotes if present
                     if (next_token->type == DQUOTE || next_token->type == QUOTE)
                         next_token = next_token->next;
-                    
                     if (next_token && next_token->content)
                     {
-                        // Concatenate the current token with the next token
                         new_content = ft_strjoin(str, next_token->content, envs);
                         if (new_content)
                         {
-                            // Update current token content
-                            // free(current->content);
                             current->content = new_content;
-                            
-                            // Mark the next token for skipping by setting content to NULL
-                            // free(next_token->content);
                             next_token->content = NULL;
                         }
-                        // free(str);
                     }
-                    // else
-                    // {
-                    //     free(str);
-                    // }
                 }
-                
                 current = current->next;
             }
         }
@@ -107,6 +83,7 @@ int check_expand(t_parsing *head,t_env *envp,int len,t_cmd **cmd)
         head = expand(head,envp,&data,cmd);
         if(!head)
         {
+            printf("heeeere\n");
             return(2);
         }
         head = head->next;

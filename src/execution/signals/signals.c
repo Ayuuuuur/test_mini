@@ -19,7 +19,7 @@ void my_handller(int sig)
     rl_on_new_line();
     rl_replace_line("", 1);
     rl_redisplay();
-    G_EXIT_STATUS = 130;
+    g_exit_status = 130;
 }
 
 
@@ -27,6 +27,7 @@ void    sig_heredoc(int sig)
 {
     (void) sig;
     ft_putchar_fd('\n', 1);
-    exit(130);
+    // clean_memory(&(envs->head_gc));
+    exit(130); /////////////////////// check that in heredoc 
 }
 
