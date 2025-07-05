@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list_environment.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hind <hind@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 23:28:21 by hind              #+#    #+#             */
+/*   Updated: 2025/07/03 23:29:51 by hind             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 char	*ft_strjoin_env(char const *s1, char const *s2)
@@ -46,42 +58,41 @@ char	*ft_strdup_env(const char *s1)
 	return (str);
 }
 
-
-t_env  *list_envs(char **envp)
+t_env	*list_envs(char **envp)
 {
 	char	**minimal_envp;
 
-	if(!envp) // if all envps removed 
-		return(NULL);
-	else if(envp[0] == NULL) // cuz a char *envp[] = { NULL }; (start with minimal envps)
+	if (!envp)
+		return (NULL);
+	else if (envp[0] == NULL)
 	{
 		minimal_envp = creat_mini_envp();
-		return(build_new_envs(minimal_envp, envp));
+		return (build_new_envs(minimal_envp, envp, 'm'));
 	}
 	else
-		return(build_new_envs(envp, envp));
+		return (build_new_envs(envp, envp, 'o'));
 }
 
-
-t_env  *build_new_envs(char **envs, char **envp)
+t_env	*build_new_envs(char **envs, char **envp, char flag)
 {
 	t_env	*head_env;
 	t_env	*newnode;
-	int i;
+	int		i;
 
 	head_env = 0;
 	i = 0;
 	while (envs[i])
 	{
 		newnode = new_env(envs[i], envp);
-		if(!newnode)
+		if (!newnode)
 		{
-			free_list(&head_env); //garbeg coll
-			return(NULL);
+			free_list(&head_env);
+			return (NULL);
 		}
 		add_env(newnode, &head_env);
 		i++;
 	}
-	return(head_env);
+	if (flag == 'm')
+		free_2d(envs);
+	return (head_env);
 }
-

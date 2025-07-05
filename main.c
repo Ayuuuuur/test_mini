@@ -20,15 +20,6 @@ int	lexer_checker(char *rdl, t_env *envs, t_cmd **cmd)
 	t_parsing	*head;
 
 	head = lexer(rdl, envs);
-	t_parsing *h = head;
-    while(h)
-    {
-        printf("content => %s\n",h->content);
-        printf("state => %d\n",h->state);
-        printf("type => %d\n",h->type);
-        printf("********************\n");
-        h = h->next;
-    }
 	if (checker(head, envs, ft_strlen(rdl), cmd) == 2)
 	{
 		free(rdl);
@@ -55,22 +46,6 @@ int	send_to_execution(t_cmd *cmd, t_env *envs, int *arr_in_out, char *rdl)
 	t_cmd	*commads_in_out;
 	t_pids	*pids;
 
-	commads_in_out = cmd;        
-        // int i = 0;
-        //  commads_in_out = cmd;
-                
-        // //execution
-        int i = 0;
-        while(commads_in_out)
-        {
-            i = 0;
-            while(commads_in_out->full_cmd[i])
-                printf("full cmd ==> %s\n",commads_in_out->full_cmd[i++]);
-            printf("in_file ==> %d\n",commads_in_out->in_file);
-            printf("out_file ==> %d\n",commads_in_out->out_file);
-            printf("********************\n");
-            commads_in_out = commads_in_out->next;
-        }
 	commads_in_out = cmd;
 	if (commads_in_out)
 	{

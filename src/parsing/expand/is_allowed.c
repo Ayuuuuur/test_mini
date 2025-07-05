@@ -6,15 +6,15 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 16:25:59 by nahilal           #+#    #+#             */
-/*   Updated: 2025/05/04 17:39:34 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/04 18:36:43 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int is_allowed(char c)
+int	is_allowed(char c)
 {
-    if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
+	if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
 		return (1);
 	return (0);
 }

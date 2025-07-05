@@ -12,7 +12,7 @@
 
 #include "../includes/libft.h"
 
-static int	len_numbre(long int nb)
+static int	len_n(long int nb)
 {
 	int	len;
 
@@ -39,7 +39,7 @@ char	*ft_itoa(int n, t_env *envs)
 	long int	nb;
 
 	nb = n;
-	str = (char *)g_collector(((len = len_numbre(nb)) + 1) * sizeof(char), envs);
+	str = (char *)g_collector(((len = len_n(nb)) + 1) * sizeof(char), envs);
 	if (!str)
 		return (NULL);
 	if (nb < 0)

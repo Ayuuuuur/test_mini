@@ -1,6 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_of_envs.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hind <hind@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 23:29:56 by hind              #+#    #+#             */
+/*   Updated: 2025/07/03 23:30:27 by hind             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
 
 static int	count_word(char const *str, char c)
 {
@@ -59,7 +69,6 @@ static void	free_split(char **arr, int arrlen)
 	}
 	free(arr);
 }
-
 
 char	**ft_split_env(char const *s, char c)
 {

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_memory.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hind <hind@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 01:00:18 by hind              #+#    #+#             */
+/*   Updated: 2025/07/04 01:00:18 by hind             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void free_2d(char **str)
+void	free_2d(char **str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -22,9 +34,9 @@ void	free_list(t_env **head_env)
 	while (temp != NULL)
 	{
 		next = temp->next;
-		if(temp->key)
+		if (temp->key)
 			free(temp->key);
-		if(temp->value)
+		if (temp->value)
 			free(temp->value);
 		free(temp);
 		temp = next;
@@ -32,9 +44,9 @@ void	free_list(t_env **head_env)
 	(*head_env) = NULL;
 }
 
-void free_node(t_env *node)
+void	free_node(t_env *node)
 {
-	if(node->value != NULL)
+	if (node->value != NULL)
 		free(node->value);
 	free(node->key);
 	free(node);

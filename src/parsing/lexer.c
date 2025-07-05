@@ -12,16 +12,13 @@
 
 #include "../../includes/minishell.h"
 
-t_parsing	*handle_double_redirect(t_lexer_data *data, t_parsing *head
-	, t_env *envs)
+t_parsing	*handle_double_redirect(t_lexer_data *data, t_parsing *head,
+		t_env *envs)
 {
-	char		*tmp;
-	int			t;
-	enum e_type	c;
+	char	*tmp;
+	char	c;
 
-	c = data->redirect_type;
-	t = c;
-	if (c == DREDIR_OUT)
+	if (data->redirect_type == DREDIR_OUT)
 		c = '>';
 	else
 		c = '<';
@@ -29,14 +26,15 @@ t_parsing	*handle_double_redirect(t_lexer_data *data, t_parsing *head
 	tmp[0] = c;
 	tmp[1] = c;
 	tmp[2] = 0;
-	head = ft_save(tmp, head, t, 0, data->state, envs);
+	data->token_type = data->redirect_type;
+	data->char_value = 0;
+	head = ft_save(data, head, envs, tmp);
 	data->i += 2;
 	data->i--;
 	return (head);
 }
 
-t_parsing	*handle_env_token(t_lexer_data *data, t_parsing *head
-	, t_env *envs)
+t_parsing	*handle_env_token(t_lexer_data *data, t_parsing *head, t_env *envs)
 {
 	char		*tmp;
 	int			j;
@@ -57,18 +55,21 @@ t_parsing	*handle_env_token(t_lexer_data *data, t_parsing *head
 	}
 	tmp[j] = 0;
 	data->state = ENV_STRING;
-	head = ft_save(tmp, head, WORD, 0, data->state, envs);
+	data->token_type = WORD;
+	data->char_value = 0;
+	head = ft_save(data, head, envs, tmp);
 	data->i--;
 	return (head);
 }
 
 t_parsing	*handle_spaces(t_lexer_data *data, t_parsing *head, t_env *envs)
 {
-	char	*tmp;
-
-	tmp = NULL;
 	if (data->str[data->i] == ' ')
-		head = ft_save(tmp, head, WHITE_SPACE, 1, data->state, envs);
+	{
+		data->token_type = WHITE_SPACE;
+		data->char_value = 1;
+		head = ft_save(data, head, envs, NULL);
+	}
 	while (data->str[data->i] == ' ')
 		data->i++;
 	data->state = GENERAL;
@@ -95,8 +96,11 @@ t_parsing	*process_token(t_lexer_data *data, t_parsing *head, t_env *envs)
 		return (handle_quote_token(data, head, envs));
 	}
 	else
-		return (ft_save(data->str, head, c, data->str[data->i]
-				, data->state, envs));
+	{
+		data->token_type = c;
+		data->char_value = data->str[data->i];
+		return (ft_save(data, head, envs, data->str));
+	}
 }
 
 t_parsing	*lexer(char *str, t_env *envs)

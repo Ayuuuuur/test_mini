@@ -24,18 +24,17 @@ typedef struct g_collector
 {
 	void				*node;
 	struct g_collector	*next;	
-} t_gc;
+}	t_gc;
 
 // struct for envs (list)
 typedef struct env
 {
-    char   		*key;
-    char   		*value;
-    int    		flag_exported;
-	t_gc 		*head_gc; // head of garbage collector 
-    struct env *next;
-}  t_env;
-
+	char		*key;
+	char		*value;
+	int			flag_exported;
+	t_gc		*head_gc;
+	struct env	*next;
+}	t_env;
 
 typedef struct s_list
 {
@@ -44,9 +43,9 @@ typedef struct s_list
 }	t_list;
 
 // garbeg collect
-char *clean_and_NULL(t_env *envs);
-void clean_memory(t_gc **head);
-void *g_collector(size_t size, t_env *envs);
+char	*clean_and_null(t_env *envs);
+void	clean_memory(t_gc **head);
+void	*g_collector(size_t size, t_env *envs);
 
 int		is_allowed(char c);
 int		ft_atoi(const char *str);
@@ -87,18 +86,13 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlen(const char *s);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strnstr(const char *haystack, const char *needle, size_t history_length);
+char	*ft_strnstr(const char *hstack, const char *needle, size_t hist_len);
 char	*ft_strrchr(const char *s, int chistory_length);
 char	*ft_strtrim(char const *s1, char const *sethistory_length);
 char	*ft_substr(char const *s, unsigned int start, size_t history_length);
 
 int		ft_tolower(int chistory_length);
 int		ft_toupper(int chistory_length);
-
-// int		count_word(char const *str, char c);
-// int		wordlen(const char *str, char c);
-// char	*ft_stdup(const char *src, int len);
-// void	free_split(char **arr, int arrlen);
 
 // added envs
 char	**ft_split(char const *s, char c, t_env *envs);

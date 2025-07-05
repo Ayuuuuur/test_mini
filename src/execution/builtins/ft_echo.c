@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hind <hind@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 22:52:57 by hind              #+#    #+#             */
+/*   Updated: 2025/07/03 22:53:29 by hind             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 int	check_flag_n(char *str)
 {
 	int	i;
 
-	i = 1; // to skip the '-' cuz already check it
+	i = 1;
 	while (str[i])
 	{
 		if (str[i] != 'n')
@@ -21,7 +33,7 @@ int	ft_echo(char **args)
 	check = 0;
 	while (args[i])
 	{
-		if (args[i][0] == '-' && check_flag_n(args[i]) == 1) // check the first char is - ?
+		if (args[i][0] == '-' && check_flag_n(args[i]) == 1)
 			check = 1;
 		else
 			break ;
@@ -30,7 +42,7 @@ int	ft_echo(char **args)
 	while (args[i])
 	{
 		printf("%s", args[i]);
-		if (args[i + 1]) //no space after the last arg
+		if (args[i + 1])
 			printf(" ");
 		i++;
 	}

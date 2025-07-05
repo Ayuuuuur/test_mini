@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   g_collectore.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hind <hind@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 01:02:28 by hind              #+#    #+#             */
+/*   Updated: 2025/07/04 01:05:55 by hind             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
-void *g_collector(size_t size, t_env *envs)
+void	*g_collector(size_t size, t_env *envs)
 {
 	t_gc		*temp;
 	t_gc		*new_collect;
 	void		*allocated;
 
 	allocated = malloc(size);
-	if(!allocated)
-		return(clean_and_NULL(envs));
-	new_collect = malloc(sizeof(t_gc)); // allocate the new node
-	if(!new_collect)
-		return(clean_and_NULL(envs));
+	if (!allocated)
+		return (clean_and_null(envs));
+	new_collect = malloc(sizeof(t_gc));
+	if (!new_collect)
+		return (clean_and_null(envs));
 	new_collect->node = allocated;
 	new_collect->next = NULL;
 	if (envs->head_gc == NULL)
@@ -23,19 +35,19 @@ void *g_collector(size_t size, t_env *envs)
 			temp = temp->next;
 		temp->next = new_collect;
 	}
-	return(allocated);
+	return (allocated);
 }
 
-char *clean_and_NULL(t_env *envs)
+char	*clean_and_null(t_env *envs)
 {
-	clean_memory(&(envs->head_gc)); // call to clear_memory // return with null or somethingg 
-	return(NULL);
+	clean_memory(&(envs->head_gc));
+	return (NULL);
 }
 
-void clean_memory(t_gc **head)
+void	clean_memory(t_gc **head)
 {
-	t_gc *temp;
-	t_gc *next;
+	t_gc	*temp;
+	t_gc	*next;
 
 	temp = (*head);
 	while (temp)
@@ -47,5 +59,3 @@ void clean_memory(t_gc **head)
 	}
 	*head = NULL;
 }
-
-

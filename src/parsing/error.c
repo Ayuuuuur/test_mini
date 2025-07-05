@@ -12,9 +12,8 @@
 
 #include "../../includes/minishell.h"
 
-void    error_print(char *str)
+void	error_print(char *str)
 {
-    ft_putstr_fd("Error : ",2);
-    ft_putstr_fd(str,2);
-    return;
+	ft_putstr_fd("Error : ", 2);
+	ft_putstr_fd(str, 2);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executable_path.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hind <hind@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/03 23:43:09 by hind              #+#    #+#             */
+/*   Updated: 2025/07/03 23:43:09 by hind             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 void	free_arr_b(void **ptr)
@@ -17,8 +29,8 @@ char	*get_path_env(t_env *envs)
 {
 	while (envs)
 	{
-		if(ft_strcmp(envs->key, "PATH") == 0)
-			return(envs->value);
+		if (ft_strcmp(envs->key, "PATH") == 0)
+			return (envs->value);
 		envs = envs->next;
 	}
 	return (NULL);
@@ -61,12 +73,12 @@ char	*executable_path(char *cmd, t_env *envs)
 	char	*path;
 
 	if (!cmd)
-		return (NULL);	
+		return (NULL);
 	if (access(cmd, X_OK) == 0)
 		return (cmd);
 	if (cmd[0] == '/' || cmd[0] == '.' )
 		return (NULL);
-	path = get_path_env(envs); ////
+	path = get_path_env(envs);
 	dirc = ft_split(path, ':', envs);
 	if (!dirc)
 		return (NULL);

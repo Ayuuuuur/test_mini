@@ -3,189 +3,93 @@
 /*                                                        :::      ::::::::   */
 /*   ft_double.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 18:35:55 by marvin            #+#    #+#             */
-/*   Updated: 2025/05/14 19:30:20 by claude           ###   ########.fr       */
+/*   Updated: 2025/07/04 18:21:56 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-char *join_char(char *str, char c, t_env *envs)
+int	handle_dollar_sign_1(char *str, t_var *data, t_env *envp)
 {
-    char *result;
-    size_t len;
-    
-    if (!str)
-    {
-        result = g_collector(2, envs);
-        if (!result)
-            return (NULL);
-        result[0] = c;
-        result[1] = '\0';
-        return (result);
-    }
-    
-    len = ft_strlen(str);
-    result = g_collector(len + 2, envs);
-    if (!result)
-    {
-        // free(str);
-        return (NULL);
-    }
-    ft_strlcpy(result, str, len + 1);
-    result[len] = c;
-    result[len + 1] = '\0';
-    
-    // free(str);
-    return (result);
-}
-int check_parth(char *str)
-{
-    int i;
-    int len;
+	int	result;
 
-    i = 0;
-    len = 0;
-    while(str[i])
-    {
-        if(str[i] == '(')
-            len++;
-        i++;
-    }
-    i = 0;
-    while(str[i] && len >= 0)
-    {
-        if(str[i] == ')')
-            len--;
-        i++;
-    }
-    if(len != 0)
-        return(0);
-    return (2);
+	data->j = data->i + 1;
+	result = handle_special_cases(str, data, envp);
+	if (result == 1)
+		return (1);
+	if (str[data->j] == '\0')
+	{
+		data->s1 = join_char(data->s1, '$', envp);
+		if (!data->s1)
+			return (2);
+		return (0);
+	}
+	result = handle_parentheses(str, data, envp);
+	if (result)
+		return (result);
+	result = handle_single_parentheses(str, data, envp);
+	if (result)
+		return (result);
+	return (handle_env_variable_1(str, data, envp));
 }
 
-
-int ft_double(char *str, t_env *envp, t_var *data)
+int	init_data_string(t_var *data, t_env *envp)
 {
-    t_env *tmp;
-    int len;
-    int start;
+	data->s1 = g_collector(2, envp);
+	if (!data->s1)
+		return (2);
+	data->s1[0] = '\0';
+	data->i = 0;
+	return (0);
+}
 
-    data->s1 = g_collector(2, envp);
-    if (!data->s1)
-        return (2);
-    data->s1[0] = '\0';
-    data->i = 0;
-    while (str[data->i])
-    {
-        if (str[data->i] != '$')
-        {
-            data->s1 = join_char(data->s1, str[data->i], envp);
-            if (!data->s1)
-                return (2);
-        }
-        else if (str[data->i] == '$')
-        {
-            data->j = data->i + 1;
-            if(str[data->j] == '$')
-            {
-                data->s1 = ft_strjoin(data->s1,"$$",envp);
-                data->i = data->j;
-                continue;
-            }
-            else if(str[data->j] == ' ')
-            {
-                data->s1 = join_char(data->s1,str[data->j],envp);
-                data->i = data->j;
-                continue;
-            }
-            else if(str[data->j] == '?')
-            {
-                data->s1 = ft_strjoin(data->s1,ft_itoa(g_exit_status,envp),envp);
-                data->i = data->j;
-                continue;
-            }
-            else if (str[data->j] == '\0')
-            {
-                data->s1 = join_char(data->s1, '$', envp);
-                if (!data->s1)
-                    return (2);
-                break;
-            }
-            else if (str[data->j] == '(' && str[data->j + 1] == '(')
-            {
-                if(check_parth(str + data->i) == 0)
-                    return (error_print("syntax error \"unclosed parentheses\"\n"), 2);
-                data->j += 2;
-                while (str[data->j] != ')' || str[data->j + 1] != ')')
-                {
-                    if (str[data->j] == '\0')
-                        return (error_print("syntax error \"unclosed parentheses\"\n"), 2);
-                    data->j++;
-                }
-                data->s1 = ft_strjoin(data->s1, "0", envp);
-                if (!data->s1)
-                    return (2);
-                data->i = data->j + 2;
-                continue;
-            }
-            else if (str[data->j] == '(')
-            {
-                if(check_parth(str + data->i) == 0)
-                    return (error_print("syntax error \"unclosed parentheses\"\n"), 2);
-                data->j++;
-                start = data->j;
+int	process_regular_char(char *str, t_var *data, t_env *envp)
+{
+	data->s1 = join_char(data->s1, str[data->i], envp);
+	if (!data->s1)
+		return (2);
+	return (0);
+}
 
-                while (str[data->j] != ')')
-                {
-                    if (str[data->j] == '\0')
-                        return (error_print("syntax error \"unclosed parentheses\"\n"), 2);
-                    data->j++;
-                }
-                data->s1 = ft_strjoin(data->s1, ft_substr(str, start, data->j - start), envp);
-                if (!data->s1)
-                    return (2);
-                
-                data->i = data->j + 1;
-                continue;
-            }
-            else
-            {
-                start = data->j;
-                while (str[data->j] && (ft_isalnum(str[data->j]) || str[data->j] == '_'))
-                    data->j++;
-                len = data->j - start;
-                if (len > 0)
-                {
-                    tmp = envp;
-                    while (tmp)
-                    {
-                        char *temp_substr = ft_substr(str, start, len);  // ✅ Store the result
-                        if (ft_strcmp(tmp->key, temp_substr) == 0)
-                        {
-                            data->s1 = ft_strjoin(data->s1, tmp->value, envp);
-                            free(temp_substr);  // ✅ Free the malloc'd substring
-                            if (!data->s1)
-                                return (2);
-                            break;
-                        }
-                        free(temp_substr); 
-                        tmp = tmp->next;
-                    }
-                    data->i = data->j - 1;
-                }
-                else
-                {
-                    data->s1 = join_char(data->s1, '$', envp);
-                    if (!data->s1)
-                        return (2);
-                    continue;
-                }
-            }
-        }
-        data->i++;
-    }
-    return (0);
+int	process_dollar_sign(char *str, t_var *data, t_env *envp)
+{
+	int	result;
+
+	result = handle_dollar_sign_1(str, data, envp);
+	if (result == 2)
+		return (2);
+	if (result == 1)
+		return (1);
+	return (0);
+}
+
+int	ft_double(char *str, t_env *envp, t_var *data)
+{
+	int	result;
+
+	result = init_data_string(data, envp);
+	if (result == 2)
+		return (2);
+	while (str[data->i])
+	{
+		if (str[data->i] != '$')
+		{
+			result = process_regular_char(str, data, envp);
+			if (result == 2)
+				return (2);
+		}
+		else
+		{
+			result = process_dollar_sign(str, data, envp);
+			if (result == 2)
+				return (2);
+			if (result == 1)
+				continue ;
+		}
+		data->i++;
+	}
+	return (0);
 }

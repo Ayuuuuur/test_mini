@@ -6,11 +6,11 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 22:37:10 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/03 22:37:27 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/04 18:36:21 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 int	space_skip_main(char *rdl)
 {

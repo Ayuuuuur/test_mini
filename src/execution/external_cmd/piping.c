@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   piping.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hind <hind@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/04 00:12:34 by hind              #+#    #+#             */
+/*   Updated: 2025/07/04 00:12:34 by hind             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../includes/minishell.h"
 
 void	error_msg(char *str, t_env *envs)
@@ -14,9 +26,9 @@ void	close_pipes(int nbr_pipes, int **ends)
 	i = 0;
 	while (i < nbr_pipes)
 	{
-		if(close(ends[i][0]) != 0 )
+		if (close(ends[i][0]) != 0)
 			perror("close ");
-		if(close(ends[i][1]) != 0)
+		if (close(ends[i][1]) != 0)
 			perror("close ");
 		i++;
 	}
@@ -44,23 +56,23 @@ int	**piping(int lines, t_env *envs)
 	return (pip);
 }
 
-void signaled(int status)
+void	signaled(int status)
 {
 	int	is_sig;
 
 	is_sig = 0;
-	if(WTERMSIG(status) == SIGINT)
+	if (WTERMSIG(status) == SIGINT)
 	{
-		if(!is_sig)
+		if (!is_sig)
 		{
-			write(1, "\n", 1); //print new line 
-			is_sig = 1; // to dont print it few times 
-		} 
+			write(1, "\n", 1);
+			is_sig = 1;
+		}
 		g_exit_status = 130;
 	}
 	else if (WTERMSIG(status) == SIGQUIT)
 	{
-		if(!is_sig)
+		if (!is_sig)
 		{
 			printf("Quit \n");
 			is_sig = 1;
@@ -69,16 +81,16 @@ void signaled(int status)
 	}
 }
 
-void	 waiting_childs(t_pids *process_ids)
+void	waiting_childs(t_pids *process_ids)
 {
-	int	(i), (status);
+	int (i), (status);
 	i = 0;
-	signal(SIGINT, SIG_IGN); // ignore SIGINT while waiting -> that only the child is affected, and the parent shell doesn’t react
+	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	while (i < process_ids->nbr_childs)
 	{
 		waitpid(process_ids->pids[i], &status, 0);
-		if(WIFEXITED(status)) // if the program exited , extract the real exit status 
+		if (WIFEXITED(status))
 			g_exit_status = WEXITSTATUS(status);
 		if (WIFSIGNALED(status))
 			signaled(status);
