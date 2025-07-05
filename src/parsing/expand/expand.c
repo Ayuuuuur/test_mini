@@ -12,21 +12,21 @@
 
 #include "../../../includes/minishell.h"
 
-t_parsing	*loop_expand(t_parsing *current, t_env *envp, t_var *data,
+t_parsing	*loop_expand(t_parsing **current, t_env *envp, t_var *data,
 		char **concatenated_value)
 {
 	int	res;
 
-	while (check_state_exp(current) == 1)
+	while (check_state_exp(*current) == 1)
 	{
-		if (if_helper(&current) == 1)
+		if (if_helper(current) == 1)
 			continue ;
 		if (!help_concat(concatenated_value, current, envp, data))
 			return (NULL);
-		if (!current->next)
+		if (!(*current)->next)
 			break ;
-		current = current->next;
-		res = helper_loop_two(current);
+		(*current) = (*current)->next;
+		res = helper_loop_two(*current);
 		if (res == 2 || res == 1)
 		{
 			if (res == 1)
@@ -34,7 +34,7 @@ t_parsing	*loop_expand(t_parsing *current, t_env *envp, t_var *data,
 			break ;
 		}
 	}
-	return (current);
+	return ((*current));
 }
 
 t_parsing	*retun_expand(t_parsing *head, t_env *envp, t_var *data,
@@ -49,7 +49,7 @@ t_parsing	*retun_expand(t_parsing *head, t_env *envp, t_var *data,
 	{
 		current = current->next;
 	}
-	current = loop_expand(current, envp, data, &concatenated_value);
+	current = loop_expand(&current, envp, data, &concatenated_value);
 	if (concatenated_value && ft_strlen(concatenated_value) > 0)
 	{
 		data->s[data->l] = concatenated_value;

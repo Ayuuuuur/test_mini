@@ -6,7 +6,7 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 16:29:37 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/04 18:27:46 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 17:28:25 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	check_state_exp(t_parsing *current)
 	return (0);
 }
 
-t_parsing	*help_concat(char **concatenated_value, t_parsing *current,
+t_parsing	*help_concat(char **concatenated_value, t_parsing **current,
 		t_env *envp, t_var *data)
 {
 	char	*new_concat;
@@ -82,5 +82,5 @@ t_parsing	*help_concat(char **concatenated_value, t_parsing *current,
 	if (!new_concat)
 		return (NULL);
 	*concatenated_value = new_concat;
-	return (current);
+	return ((*current));
 }

@@ -6,7 +6,7 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 16:27:54 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/04 16:28:03 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 17:59:33 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,25 @@ int	handle_env_split(t_parsing *head, t_env *envp, t_var *data)
 	}
 }
 
-char	*get_token_value(t_parsing *head, t_env *envp, t_var *data)
+char	*get_token_value(t_parsing **head, t_env *envp, t_var *data)
 {
-	if (!head || !head->content)
+	if (!(*head) || !(*head)->content)
 		return (ft_strdup("", envp));
-	if (head->state == 3)
-		return (check_env_general(head->content, envp));
-	else if (head->state == 2)
+	if ((*head)->state == 3)
+		return (check_env_general((*head)->content, envp));
+	else if ((*head)->state == 2)
 	{
-		if (ft_double(head->content, envp, data) == 2)
+		if (ft_double(head, envp, data) == 2)
 			return (NULL);
 		if (data->s1)
 			return (ft_strdup(data->s1, envp));
 		else
 			return (ft_strdup("", envp));
 	}
-	else if (head->state == 1)
-		return (ft_strdup(head->content, envp));
-	else if (head->state == 0 && head->type == WORD)
-		return (ft_strdup(head->content, envp));
+	else if ((*head)->state == 1)
+		return (ft_strdup((*head)->content, envp));
+	else if ((*head)->state == 0 && (*head)->type == WORD)
+		return (ft_strdup((*head)->content, envp));
 	return (ft_strdup("", envp));
 }
 

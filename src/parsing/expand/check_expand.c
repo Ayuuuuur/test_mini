@@ -50,10 +50,7 @@ int	check_expand(t_parsing *head, t_env *envp, int len, t_cmd **cmd)
 	t_var	data;
 
 	if (len == 0)
-	{
-		data.s = g_collector(1 * sizeof(char *), envp);
-		data.s[0] = NULL;
-	}
+		data.s = NULL;
 	else
 		data.s = g_collector(len * 10 * sizeof(char *), envp);
 	data.l = 0;
@@ -64,10 +61,7 @@ int	check_expand(t_parsing *head, t_env *envp, int len, t_cmd **cmd)
 	{
 		head = expand(head, envp, &data, cmd);
 		if (!head)
-		{
-			printf("heeeere\n");
 			return (2);
-		}
 		head = head->next;
 	}
 	*cmd = ft_send(&data, *cmd, envp);

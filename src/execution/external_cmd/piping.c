@@ -84,6 +84,7 @@ void	signaled(int status)
 void	waiting_childs(t_pids *process_ids)
 {
 	int (i), (status);
+	status = 0;
 	i = 0;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);

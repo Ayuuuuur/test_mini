@@ -6,7 +6,7 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 18:23:37 by marvin            #+#    #+#             */
-/*   Updated: 2025/07/04 18:35:30 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 15:58:31 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_cmd	*allocate_cmd_struct(t_var *data, t_env *envs)
 	t_cmd	*cmd;
 
 	cmd = g_collector(sizeof(t_cmd), envs);
-	if (!cmd || data->s[0] == NULL || data->l == 0)
+	if (!cmd || data->s == NULL || data->l == 0)
 		return (NULL);
 	cmd->full_cmd = g_collector((data->l + 1) * sizeof(char *), envs);
 	if (!cmd->full_cmd)

@@ -98,6 +98,7 @@ t_pids	*execute_commands(t_env **envs, t_cmd *tmp_cmd)
 	t_pids	*process_ids;
 	int		**pipes;
 	int		len_cmd;
+	int i;
 
 	process_ids = g_collector(sizeof(t_pids), (*envs));
 	if (!process_ids)
@@ -105,6 +106,12 @@ t_pids	*execute_commands(t_env **envs, t_cmd *tmp_cmd)
 	process_ids->pids = g_collector(sizeof(int) * 1024, (*envs));
 	if (!process_ids->pids)
 		return (NULL);
+	i = 0;
+	while (i < 1024)
+	{
+		process_ids->pids[i] = -1;
+		i++;
+	}
 	len_cmd = len_list_cmd(tmp_cmd);
 	pipes = piping(len_cmd - 1, (*envs));
 	if (!pipes)
