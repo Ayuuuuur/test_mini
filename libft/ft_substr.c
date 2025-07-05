@@ -12,7 +12,7 @@
 
 #include "../includes/libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, unsigned int start, size_t len, t_env *envs)
 {
 	unsigned int	i;
 	char			*str;
@@ -22,7 +22,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	if (start > ft_strlen(s))
 	{
-		str = (char *)malloc(sizeof(char));
+		str = (char *)g_collector(sizeof(char), envs);
 		if (!str)
 			return (NULL);
 		str[0] = '\0';
@@ -30,7 +30,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	if (len + start > ft_strlen(s))
 		len = ft_strlen(s) - start;
-	str = (char *)malloc((len + 1) * sizeof(char));
+	str = (char *)g_collector((len + 1) * sizeof(char), envs);
 	if (!str)
 		return (NULL);
 	while (s[start] && i < len)

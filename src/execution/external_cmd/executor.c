@@ -98,7 +98,7 @@ t_pids	*execute_commands(t_env **envs, t_cmd *tmp_cmd)
 	t_pids	*process_ids;
 	int		**pipes;
 	int		len_cmd;
-	int i;
+	int		i;
 
 	process_ids = g_collector(sizeof(t_pids), (*envs));
 	if (!process_ids)

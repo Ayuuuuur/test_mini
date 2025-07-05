@@ -6,7 +6,7 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:20:21 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/04 17:22:00 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 19:18:21 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*find_env_var_value(char *line, int start, int len, t_env *envp)
 	char	*var_name;
 
 	tmp = envp;
-	var_name = ft_substr(line, start, len);
+	var_name = ft_substr(line, start, len, envp);
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->key, var_name) == 0)

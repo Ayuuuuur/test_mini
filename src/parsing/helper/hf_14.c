@@ -6,7 +6,7 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 18:21:53 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/05 18:21:55 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 19:35:15 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,16 @@ int	process_dollar_sign(char *str, t_var *data, t_env *envp)
 		return (2);
 	if (result == 1)
 		return (1);
+	return (0);
+}
+
+int	env_main(t_env **envs, char **envp)
+{
+	*envs = list_envs(envp);
+	if (!*envs)
+	{
+		ft_putstr_fd("minishell: error initializing environment\n", 2);
+		return (free_list(envs), 1);
+	}
 	return (0);
 }

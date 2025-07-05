@@ -6,7 +6,7 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:23:47 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/04 18:29:06 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 19:14:05 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ void	heredoc_input_loop(int *fds, char *delimiter, int flag, t_env *envp)
 	{
 		line = readline("> ");
 		if (ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
 			break ;
+		}
 		line = process_heredoc_line(line, flag, envp);
 		if (!line)
 		{

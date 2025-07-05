@@ -6,7 +6,7 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:12:40 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/04 18:28:12 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 19:24:48 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,8 @@ int	handle_single_parentheses(char *str, t_var *data, t_env *envp)
 					2);
 			data->j++;
 		}
-		data->s1 = ft_strjoin(data->s1, ft_substr(str, start, data->j - start),
-				envp);
+		data->s1 = ft_strjoin(data->s1, ft_substr(str, start, (data->j - start),
+					envp), envp);
 		if (!data->s1)
 			return (2);
 		data->i = data->j + 1;

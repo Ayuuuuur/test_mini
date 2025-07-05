@@ -26,7 +26,7 @@ static int	search_char(const char *set, char c)
 	return (0);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char const *s1, char const *set, t_env *envp)
 {
 	size_t	i;
 	size_t	len;
@@ -49,6 +49,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 			return (NULL);
 	}
 	else
-		str = ft_substr (s1, i, (len - i));
+		str = ft_substr(s1, i, (len - i), envp);
 	return (str);
 }

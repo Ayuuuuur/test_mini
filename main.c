@@ -6,35 +6,25 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:47:30 by nahilal           #+#    #+#             */
-/*   Updated: 2025/06/12 18:03:28 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 19:42:43 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 #include <readline/history.h>
 
-int	g_exit_status = 0;
+int		g_exit_status = 0;
 
 int	lexer_checker(char *rdl, t_env *envs, t_cmd **cmd)
 {
 	t_parsing	*head;
 
 	head = lexer(rdl, envs);
-	// t_parsing *h = head;
-    //     while(h)
-    //     {
-    //         printf("content => %s\n",h->content);
-    //         printf("state => %d\n",h->state);
-    //         printf("type => %d\n",h->type);
-    //         printf("********************\n");
-    //         h = h->next;
-    //     }
 	if (checker(head, envs, ft_strlen(rdl), cmd) == 2)
 	{
 		free(rdl);
 		return (0);
 	}
-	
 	return (1);
 }
 
@@ -56,21 +46,6 @@ int	send_to_execution(t_cmd *cmd, t_env *envs, int *arr_in_out, char *rdl)
 	t_cmd	*commads_in_out;
 	t_pids	*pids;
 
-	// int i = 0;
-    // commads_in_out = cmd;
-            
-    // // //execution
-    // while(commads_in_out)
-    // {
-    //     i = 0;
-    //     while(commads_in_out->full_cmd[i])
-    //         dprintf(2, "full cmd ==> %s\n",commads_in_out->full_cmd[i++]);
-    //     dprintf(2, "in_file ==> %d\n",commads_in_out->in_file);
-    //     dprintf(2, "out_file ==> %d\n",commads_in_out->out_file);
-    //     dprintf(2, "********************\n");
-    //     commads_in_out = commads_in_out->next;
-    // }
-	
 	commads_in_out = cmd;
 	if (commads_in_out)
 	{
@@ -86,14 +61,12 @@ int	send_to_execution(t_cmd *cmd, t_env *envs, int *arr_in_out, char *rdl)
 	return (1);
 }
 
-int	main_loop(t_env *envs)
+int	main_loop(t_env *envs, char *rdl)
 {
 	int		*arr_in_out;
-	char	*rdl;
 	t_cmd	*cmd;
 
 	cmd = NULL;
-	rdl = NULL;
 	arr_in_out = save_in_out(envs);
 	rdl = read_line(envs, rdl);
 	if (space_skip_main(rdl) == 0)
@@ -109,26 +82,24 @@ int	main(int ac, char **av, char **envp)
 {
 	t_env	*envs;
 	int		i;
+	char	*rdl;
 
 	(void)ac;
 	(void)av;
+	rdl = NULL;
 	signal(SIGQUIT, SIG_IGN);
-	envs = list_envs(envp);
-	if (!envs)
-	{
-		ft_putstr_fd("minishell: error initializing environment\n", 2);
-		free_list(&envs);
+	if (env_main(&envs, envp) == 1)
 		return (1);
-	}
 	envs->head_gc = NULL;
 	while (1)
 	{
 		signal(SIGINT, my_handller);
-		i = main_loop(envs);
+		i = main_loop(envs, rdl);
 		if (i == 1)
 			continue ;
 		if (i == 0)
 			return (0);
+		free(rdl);
 	}
 	return (0);
 }

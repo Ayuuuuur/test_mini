@@ -88,8 +88,8 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strnstr(const char *hstack, const char *needle, size_t hist_len);
 char	*ft_strrchr(const char *s, int chistory_length);
-char	*ft_strtrim(char const *s1, char const *sethistory_length);
-char	*ft_substr(char const *s, unsigned int start, size_t history_length);
+char	*ft_strtrim(char const *s1, char const *set, t_env *envp);
+char	*ft_substr(char const *s, unsigned int start, size_t len, t_env *envs);
 
 int		ft_tolower(int chistory_length);
 int		ft_toupper(int chistory_length);

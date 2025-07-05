@@ -6,13 +6,13 @@
 /*   By: nahilal <nahilal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:14:28 by nahilal           #+#    #+#             */
-/*   Updated: 2025/07/04 18:28:51 by nahilal          ###   ########.fr       */
+/*   Updated: 2025/07/05 19:44:49 by nahilal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-int	extract_var_name(char *str, t_var *data, char **var_name)
+int	extract_var_name(char *str, t_var *data, char **var_name, t_env *envp)
 {
 	int	start;
 	int	len;
@@ -23,7 +23,7 @@ int	extract_var_name(char *str, t_var *data, char **var_name)
 	len = data->j - start;
 	if (len > 0)
 	{
-		*var_name = ft_substr(str, start, len);
+		*var_name = ft_substr(str, start, len, envp);
 		if (!*var_name)
 			return (2);
 		return (1);
@@ -70,7 +70,7 @@ int	handle_env_variable_1(char *str, t_var *data, t_env *envp)
 	int		extract_result;
 	int		result;
 
-	extract_result = extract_var_name(str, data, &var_name);
+	extract_result = extract_var_name(str, data, &var_name, envp);
 	if (extract_result == 2)
 		return (2);
 	if (extract_result == 1)
